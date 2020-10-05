@@ -14,40 +14,30 @@ pix = image.load()
 pixel_list = []     # Список для значений пикселей изображения
 area = 0            # Длина области исследования
 
-if width > height:
+if width < height:
     area = height
-elif width < height:
+elif width > height:
     area = width
 
-for i in range(0, area-1):
+for i in range(0, area):
     li = []
-    for j in range(0, area-1):
-        li.append(pix[i,j][0])
+    for j in range(0, area):
+        try:
+            li.append(pix[i,j][0])
+        except:
+            li.append(0)
     pixel_list.append(li)
 pix_ar = np.array(pixel_list)
 
-
-def f(x, y):
-    a = [] # Лист для листов значений пикселей
-    for i in range(len(x)):
-        b = []
-        for j in range(len(y)):
-            b.append(pixel_list[i,j])
-        a.append(b)
-    return a
-
-def l(a, b):    # Тестовая функция
-    return np.sin(a) + np.cos(b)
-
-x = [i for i in range(0, area-1)]
-y = [i for i in range(0, area-1)]
+# Создаем сетки координат
+x = [i for i in range(0, area)]
+y = [i for i in range(0, area)]
 z = pix_ar
 
 X, Y = np.meshgrid(x, y)
-#z = f(X,Y)
 
 
-
+# Отрисовываем поверность
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.plot_surface(X, Y, z, cmap='Spectral')
